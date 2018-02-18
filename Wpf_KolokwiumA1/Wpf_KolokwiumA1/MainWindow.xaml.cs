@@ -26,32 +26,36 @@ namespace Wpf_KolokwiumA1
             InitializeComponent();
         }
 
+        private void PobierzZbudujPokaz()
+        {
+            string okno = rodzajOkien1.Text;
+            string drzwi = rodzajDrzwi1.Text;
+
+            if ((okno.Length < 3)||(drzwi.Length < 3))
+                {
+                    MessageBox.Show(String.Format("Zarówno rodzaj okna, jak i drzwi musi być wyrazem co najmniej trzywyrazowym."));
+                }
+            else
+            {
+                Kolor kolor = (Kolor)kolorElewacji1.SelectedItem;
+                szefBudowy.Buduj(okno, drzwi, kolor);
+                infoOProjekcie2.Text = szefBudowy.ToString();
+            }            
+            
+        }
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ProjektDomu biurowiec=new Biurowiec();
             szefBudowy.WybierzProjekt(biurowiec);
-            string okno = rodzajOkien1.Text;
-            string drzwi = "";
-            Kolor kolor = (Kolor)kolorElewacji1.SelectedItem;
-            
-            szefBudowy.Buduj(okno,drzwi,kolor);
-            infoOProjekcie2.Text=szefBudowy.ToString();
+            PobierzZbudujPokaz();
         }
 
         private void budujJednorodzinny_Click(object sender, RoutedEventArgs e)
         {
             ProjektDomu jednorodzinny = new DomJednorodzinny();
             szefBudowy.WybierzProjekt(jednorodzinny);
-            string okno = rodzajOkien1.Text;
-            string drzwi = rodzajDrzwi1.Text;
-            Kolor kolor = Kolor.Czerwony;
-            szefBudowy.Buduj(okno, drzwi, kolor);
-            infoOProjekcie2.Text = szefBudowy.ToString();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var comboBox = sender as ComboBox;
+            PobierzZbudujPokaz();
         }
 
         private void kolorElewacji1_Loaded(object sender, RoutedEventArgs e)
@@ -59,19 +63,6 @@ namespace Wpf_KolokwiumA1
             var comboBox = sender as ComboBox;
             comboBox.ItemsSource = Kolor.GetValues(typeof(Kolor));
             comboBox.SelectedItem = Kolor.Zielony;
-            
         }
-
-        private void rodzajOkien1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void rodzajDrzwi1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-        
-
-    }
+   }
 }
